@@ -1,0 +1,12 @@
+Przywitanie sie 30 minut
+
+0) starter - projek  45 minut Jacek
+
+15 minut teori pokazanie 
+
+1) Dron can fly project. Wether testy - exercise 1, exercise 2 exercise 3 1,5 h Jacek
+2) Dron can fly with Builder partern - cwiczenia na bildery i AssertJ - isWetherGoodForFlight 1,5 Krystian
+3) Mockowanie - przygotowac cwiczenia zeby wiedzieli kiedy uzywac stub a kiedy mock 1,5 -- wiecej czasu. Zbyszek
+   Pomysl na przyklad to serwis SMS
+
+buffor 1h
