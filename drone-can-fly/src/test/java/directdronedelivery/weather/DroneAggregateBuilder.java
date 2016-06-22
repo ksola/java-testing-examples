@@ -28,7 +28,8 @@ public class DroneAggregateBuilder {
     }
 
     public DroneAggregateBuilder withWeather(Weather weather) {
-        return null;
+        
+        return this;
     }
 
     public DroneAggregateBuilder withStatus(DroneStatus cargoLoading) {
