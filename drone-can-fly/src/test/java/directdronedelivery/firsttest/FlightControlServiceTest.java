@@ -2,23 +2,41 @@ package directdronedelivery.firsttest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 
+import directdrondelivery.cargo.Cargo;
+import directdrondelivery.cargo.CargoDao;
+import directdrondelivery.exceptions.DroneCannotStartException;
 import directdronedelivery.drone.DroneAggregate;
 import directdronedelivery.drone.DroneStatus;
 import directdronedelivery.drone.services.CanDroneStartResult;
 import directdronedelivery.drone.services.ErrorReason;
 import directdronedelivery.drone.services.FlightControlService;
+import directdronedelivery.drone.services.MessagingService;
 import directdronedelivery.weather.DroneAggregateBuilder;
 import directdronedelivery.weather.Weather;
 
 public class FlightControlServiceTest {
     
-    private FlightControlService flightControlService;
+	private FlightControlService flightControlService;
+    private MessagingService mMessagingService;
+    private CargoDao mCargoDao;
+    private Map<Integer, Cargo> mCargoMap = new HashMap<>();
+    
     @Before
     public void before() {
-        flightControlService = new FlightControlService();
+    	mMessagingService = Mockito.mock(MessagingService.class);
+        mCargoDao = Mockito.mock(CargoDao.class);
+        flightControlService = new FlightControlService(mCargoDao, mMessagingService);
+        
+        loadDummyCargoToMap();
     }
     
     @Test
@@ -105,5 +123,121 @@ public class FlightControlServiceTest {
         assertThat(canDronStart.getReasons()).hasSize(2);
         assertThat(canDronStart.getReasons()).contains(ErrorReason.WRONG_STATUS);
         assertThat(canDronStart.getReasons()).contains(ErrorReason.CARGO_NOT_LOADED);
+    }
+    
+    @Test
+    public void shouldNotStartDroneBecauseOfCargo() throws Exception {
+        // given
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but().withoutCargo().build();
+        
+        try {
+            //when
+            flightControlService.startDrone(droneAggregate);
+        }
+        catch(DroneCannotStartException ex) {
+            // then
+            assertThat(ex.getMessages()).hasSize(1);
+            assertThat(ex.getMessages().iterator().next()).isEqualTo(ErrorReason.CARGO_NOT_LOADED);
+        }
+        
+    }
+
+    @Test
+    public void shouldStartDroneAndSendSMSAndEmailNotification() throws Exception {
+        // given
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
+        Cargo cargoId_1 = mCargoMap.get(1);
+        Mockito.when(mCargoDao.findCargoById(1)).thenReturn(cargoId_1);
+        
+        try {
+            // when
+            flightControlService.startDrone(droneAggregate);
+
+            // then
+            assertThat(droneAggregate.getStatus()).isEqualTo(DroneStatus.DURING_MAINTENANCE);
+            Mockito.verify(mMessagingService).sendEmail(generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail());
+            Mockito.verify(mMessagingService).sendSMS(generateTestMessage(cargoId_1), cargoId_1.getRecipientPhone());
+            
+        }
+        catch(DroneCannotStartException ex) {
+            Assert.fail("This Test should pass...");
+        }
+        
+    }
+    
+    @Test
+    public void shouldStartDroneAndSendOnlySMSNotification() throws Exception {
+        // given
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(2).build();
+        Cargo cargoId_2 = mCargoMap.get(2);
+        Mockito.when(mCargoDao.findCargoById(2)).thenReturn(cargoId_2);
+        
+        try {
+            // when
+            flightControlService.startDrone(droneAggregate);
+            
+            // then
+            assertThat(droneAggregate.getStatus()).isEqualTo(DroneStatus.DURING_MAINTENANCE);
+            Mockito.verify(mMessagingService, Mockito.times(0)).sendEmail(Matchers.anyString(), Matchers.anyString());
+            Mockito.verify(mMessagingService).sendSMS(generateTestMessage(cargoId_2), cargoId_2.getRecipientPhone());
+            
+        }
+        catch(DroneCannotStartException ex) {
+            Assert.fail("This Test should pass...");
+        }
+    }
+
+    @Test
+    public void shouldStartDroneAndSendNoNotification() throws Exception {
+        // given
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(3).build();
+        Cargo cargoId_3 = mCargoMap.get(3);
+        Mockito.when(mCargoDao.findCargoById(3)).thenReturn(cargoId_3);
+        
+        try {
+            // when
+            flightControlService.startDrone(droneAggregate);
+            
+            // then
+            assertThat(droneAggregate.getStatus()).isEqualTo(DroneStatus.DURING_MAINTENANCE);
+            Mockito.verify(mMessagingService, Mockito.times(0)).sendEmail(Matchers.anyString(), Matchers.anyString());
+            Mockito.verify(mMessagingService, Mockito.times(0)).sendSMS(Matchers.anyString(), Matchers.anyString());
+            
+        }
+        catch(DroneCannotStartException ex) {
+            Assert.fail("This Test should pass...");
+        }
+    }
+    
+    
+    private void loadDummyCargoToMap() {
+        Cargo cargoId_1 = new Cargo();
+        cargoId_1.setCargoID(1);
+        cargoId_1.setCargoName("Klocki Lego StarWars (10220231)");
+        cargoId_1.setRecipientName("Adam Kowalski");
+        cargoId_1.setRecipientEmail("adam.kowalski@mail.com");
+        cargoId_1.setRecipientPhone("123-321-123");
+        mCargoMap.put(1, cargoId_1);
+        
+        Cargo cargoId_2 = new Cargo();
+        cargoId_2.setCargoID(2);
+        cargoId_2.setCargoName("Pilka adidas BEAU JEU");
+        cargoId_2.setRecipientName("Robert Lewandowski");
+        cargoId_2.setRecipientEmail("222-333-111");
+        mCargoMap.put(2, cargoId_2);
+        
+        Cargo cargoId_3 = new Cargo();
+        cargoId_3.setCargoID(3);
+        cargoId_3.setCargoName("Narty ELAN");
+        cargoId_3.setRecipientName("Kamil Stoch");
+        mCargoMap.put(3, cargoId_3);
+    }
+    
+    private String generateTestMessage(Cargo cargo) {
+        Integer cargoID = cargo.getCargoID();
+        String cargoName = cargo.getCargoName();
+        String recipientName = cargo.getRecipientName();
+        
+		return "Przesylka o nr: " + cargoID + " (" + cargoName + ") " + "jest w drodze. Odbiorca: " + recipientName + ".";
     }
 }
