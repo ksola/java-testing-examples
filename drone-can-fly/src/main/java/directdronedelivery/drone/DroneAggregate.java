@@ -3,6 +3,7 @@ package directdronedelivery.drone;
 import directdronedelivery.weather.Weather;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @EqualsAndHashCode(of = "droneID")
@@ -11,7 +12,7 @@ public class DroneAggregate {
     
     @Getter protected Integer droneID;
     @Getter protected DroneType droneType;
-    @Getter protected DroneStatus status;
+    @Getter @Setter protected DroneStatus status;
     @Getter protected Weather weather;
     @Getter protected Integer cargoID;
     
