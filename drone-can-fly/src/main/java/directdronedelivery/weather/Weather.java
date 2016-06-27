@@ -18,7 +18,7 @@ public class Weather {
     protected Weather() {
     }
     
-    // TASK 02: tdd implementation: implement first test cases and extend Weather to pass tests... repeat
+    // TODO 02: tdd implementation: implement first test cases and extend Weather to pass tests... repeat
     public boolean isGoodToFly() {
         return false;
     }

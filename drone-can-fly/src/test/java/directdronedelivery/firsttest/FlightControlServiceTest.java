@@ -68,7 +68,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotAllowToFlyWhenWeatherIsBadAndDroneIsSmall() throws Exception {
         // given
-        Weather badWeather = null; // TASK 05a Implement a WeatherBuilder.aBadWeather() method. 
+        Weather badWeather = null; // TODO 05a Implement a WeatherBuilder.aBadWeather() method. 
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but().withWeather(badWeather).build();
         
         // when 

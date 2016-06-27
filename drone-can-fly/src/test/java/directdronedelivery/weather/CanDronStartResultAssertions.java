@@ -14,7 +14,7 @@ public class CanDronStartResultAssertions extends AbstractAssert<CanDronStartRes
         return new CanDronStartResultAssertions(actual);
     }
     
-    // TASK 06. Implement own domain assertions and use it in FlightControlServiceTest 
+    // TODO 06. Implement own domain assertions and use it in FlightControlServiceTest 
     public CanDronStartResultAssertions canStart() {
         return null;
     }
