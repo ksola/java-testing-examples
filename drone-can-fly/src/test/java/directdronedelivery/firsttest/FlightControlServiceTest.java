@@ -5,22 +5,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
 
-import directdrondelivery.cargo.Cargo;
-import directdrondelivery.cargo.CargoDao;
-import directdrondelivery.exceptions.DroneCannotStartException;
+import directdronedelivery.cargo.Cargo;
+import directdronedelivery.cargo.CargoDao;
 import directdronedelivery.drone.DroneAggregate;
+import directdronedelivery.drone.DroneAggregateBuilder;
 import directdronedelivery.drone.DroneStatus;
 import directdronedelivery.drone.services.CanDroneStartResult;
 import directdronedelivery.drone.services.ErrorReason;
 import directdronedelivery.drone.services.FlightControlService;
 import directdronedelivery.drone.services.MessagingService;
-import directdronedelivery.weather.DroneAggregateBuilder;
 import directdronedelivery.weather.Weather;
 
 public class FlightControlServiceTest {

@@ -1,7 +1,8 @@
-package directdronedelivery.weather;
+package directdronedelivery.drone;
 
 import directdronedelivery.drone.DroneAggregate;
 import directdronedelivery.drone.DroneStatus;
+import directdronedelivery.weather.Weather;
 
 // TODO 05: Implement builder methods as in previous tasks
 public class DroneAggregateBuilder {

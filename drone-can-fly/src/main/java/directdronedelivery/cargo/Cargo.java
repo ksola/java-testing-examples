@@ -1,4 +1,4 @@
-package directdrondelivery.cargo;
+package directdronedelivery.cargo;
 
 import lombok.Getter;
 import lombok.Setter;
