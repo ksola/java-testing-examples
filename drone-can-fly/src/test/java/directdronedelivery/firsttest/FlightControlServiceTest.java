@@ -28,9 +28,9 @@ public class FlightControlServiceTest {
     
     @Before
     public void before() {
-    	// TODO 7a: make mock for MessagingService using Mockito.mock(...)
+    	// TODO 07a: make mock for MessagingService using Mockito.mock(...)
     	// (...)
-    	// TODO 7b: make mock for CargoDao using Mockito.mock(...)
+    	// TODO 07b: make mock for CargoDao using Mockito.mock(...)
     	// (...)
         flightControlService = new FlightControlService(mCargoDao, mMessagingService);
         
