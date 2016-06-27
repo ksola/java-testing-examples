@@ -32,7 +32,9 @@ public class FlightControlServiceTest {
     
     @Before
     public void before() {
+    	// TODO 7a: make mock for MessagingService using Mockito.mock(...)
     	mMessagingService = Mockito.mock(MessagingService.class);
+    	// TODO 7b: make mock for CargoDao using Mockito.mock(...)
         mCargoDao = Mockito.mock(CargoDao.class);
         flightControlService = new FlightControlService(mCargoDao, mMessagingService);
         
@@ -128,6 +130,9 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotStartDroneBecauseOfCargo() throws Exception {
         // given
+        // TODO 07c: For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        //           Method startDrone should throw a DroneCannotStartException, 
+        //           use try-catch block and check if exception has been thrown (check errorMessage inside the exception).
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but().withoutCargo().build();
         
         try {
@@ -139,38 +144,43 @@ public class FlightControlServiceTest {
             assertThat(ex.getMessages()).hasSize(1);
             assertThat(ex.getMessages().iterator().next()).isEqualTo(ErrorReason.CARGO_NOT_LOADED);
         }
-        
     }
 
     @Test
     public void shouldStartDroneAndSendSMSAndEmailNotification() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
         Cargo cargoId_1 = mCargoMap.get(1);
-        Mockito.when(mCargoDao.findCargoById(1)).thenReturn(cargoId_1);
-        
-        try {
-            // when
-            flightControlService.startDrone(droneAggregate);
-
-            // then
-            assertThat(droneAggregate.getStatus()).isEqualTo(DroneStatus.DURING_MAINTENANCE);
-            Mockito.verify(mMessagingService).sendEmail(generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail());
-            Mockito.verify(mMessagingService).sendSMS(generateTestMessage(cargoId_1), cargoId_1.getRecipientPhone());
-            
-        }
-        catch(DroneCannotStartException ex) {
-            Assert.fail("This Test should pass...");
-        }
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
+        // TODO 07d: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(1). Object cargoId_1 should be here returned.
+        //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
+        //           using Mockito.verify(...) if method mMessagingService.sendEmail(...) and .sendSMS(...) were invoked
+        //           with the following two parameters: generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail().
+        //           E.g. (...).sendEmail(generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail())       
+        // TODO 07d: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(1). Object cargoId_1 should be here returned.
+        //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
+        //           using Mockito.verify(...) if method mMessagingService.sendEmail(...) and .sendSMS(...) were invoked
+        //           with the following two parameters: generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail().
+        //           E.g. (...).sendEmail(generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail())
         
     }
     
     @Test
     public void shouldStartDroneAndSendOnlySMSNotification() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(2).build();
         Cargo cargoId_2 = mCargoMap.get(2);
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(2).build();
         Mockito.when(mCargoDao.findCargoById(2)).thenReturn(cargoId_2);
+
+        // TODO 07e: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(2). Object cargoId_2 should be here returned.
+        //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
+        //           using Mockito.verify(...) if method mMessagingService.sendSMS(...) was invoked
+        //           with the following two parameters: generateTestMessage(cargoId_2), cargoId_2.getRecipientEmail().
+        //           and method mMessagingService.sendEmail(...) wasn't invoked at all. 
+        //           As two parameters in method sendEmail(...) use Matchers.anyString().
+        //           E.g. (...).sendEmail(Matchers.anyString(), Matchers.anyString())
         
         try {
             // when
@@ -190,9 +200,15 @@ public class FlightControlServiceTest {
     @Test
     public void shouldStartDroneAndSendNoNotification() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(3).build();
         Cargo cargoId_3 = mCargoMap.get(3);
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(3).build();
         Mockito.when(mCargoDao.findCargoById(3)).thenReturn(cargoId_3);
+        // TODO 07f: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(3). Object cargoId_3 should be here returned.
+        //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
+        //           using Mockito.verify(...) if method mMessagingService.sendSMS(...) and .sendEmail(...) weren't invoked at all.
+        //           As two parameters in methods sendEmail(...) and sendSMS(...) use Matchers.anyString().
+        //           E.g. (...).sendEmail(Matchers.anyString(), Matchers.anyString())
         
         try {
             // when
@@ -207,6 +223,7 @@ public class FlightControlServiceTest {
         catch(DroneCannotStartException ex) {
             Assert.fail("This Test should pass...");
         }
+
     }
     
     
