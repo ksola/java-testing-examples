@@ -40,7 +40,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldAllowToFlyWhenWeatherIsGoodAndDroneIsSmall() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(1).build();
         
         // when 
         CanDroneStartResult canDronStart = flightControlService.canDronStart(droneAggregate);
@@ -53,7 +53,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldAllowToFlyWhenWeatherIsBadAndDroneIsBig() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aBigDroneWithBadWeather().withCargoId(1).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aBigDroneWithBadWeatherAndCargo().withCargoId(1).build();
         
         // when 
         CanDroneStartResult canDronStart = flightControlService.canDronStart(droneAggregate);
@@ -67,7 +67,7 @@ public class FlightControlServiceTest {
     public void shouldNotAllowToFlyWhenWeatherIsBadAndDroneIsSmall() throws Exception {
         // given
         Weather badWeather = null; // TODO 05a Implement a WeatherBuilder.aBadWeather() method. 
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but().withWeather(badWeather).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().but().withWeather(badWeather).build();
         
         // when 
         CanDroneStartResult canDronStart = flightControlService.canDronStart(droneAggregate);
@@ -81,7 +81,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotAllowToFlyWhenWeatherIsNiceAndDroneIsSmallButCargoNotLoaded() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but().withoutCargo().build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().but().withoutCargo().build();
         
         // when 
         CanDroneStartResult canDronStart = flightControlService.canDronStart(droneAggregate);
@@ -95,7 +95,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotAllowToFlyWhenWeatherIsNiceAndDroneIsSmallButWrongStatus() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but()
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().but()
                 .withStatus(DroneStatus.CARGO_LOADING).build();
         
         // when 
@@ -110,7 +110,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotAllowToFlyWhenWeatherIsNiceAndDroneIsSmallButWrongStatusAndCargoNotLoaded() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().but()
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().but()
                 .withStatus(DroneStatus.CARGO_LOADING).withoutCargo().build();
         
         // when 
@@ -126,7 +126,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotStartDroneBecauseOfCargo() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(1).build();
 
         // TODO 07c: For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           Method startDrone should throw a DroneCannotStartException, 
@@ -138,7 +138,7 @@ public class FlightControlServiceTest {
     public void shouldStartDroneAndSendSMSAndEmailNotification() throws Exception {
         // given
         Cargo cargoId_1 = mCargoMap.get(1);
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(1).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(1).build();
         
         // TODO 07d: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(1). Object cargoId_1 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
@@ -153,7 +153,7 @@ public class FlightControlServiceTest {
     public void shouldStartDroneAndSendOnlySMSNotification() throws Exception {
         // given
         Cargo cargoId_2 = mCargoMap.get(2);
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(2).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(2).build();
 
         // TODO 07e: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(2). Object cargoId_2 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
@@ -170,7 +170,7 @@ public class FlightControlServiceTest {
     public void shouldStartDroneAndSendNoNotification() throws Exception {
         // given
         Cargo cargoId_3 = mCargoMap.get(3);
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeather().withCargoId(3).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(3).build();
         // TODO 07f: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(3). Object cargoId_3 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify

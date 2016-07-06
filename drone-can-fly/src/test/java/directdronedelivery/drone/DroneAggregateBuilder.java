@@ -7,7 +7,7 @@ import directdronedelivery.weather.Weather;
 // TODO 05: Implement builder methods as in previous tasks
 public class DroneAggregateBuilder {
 
-    public static DroneAggregateBuilder aSmallDroneWithNiceWeather() {
+    public static DroneAggregateBuilder aSmallDroneWithNiceWeatherAndCargo() {
         return null;
     }
 
@@ -19,7 +19,7 @@ public class DroneAggregateBuilder {
         return null;
     }
 
-    public static DroneAggregateBuilder aBigDroneWithBadWeather() {
+    public static DroneAggregateBuilder aBigDroneWithBadWeatherAndCargo() {
         return null;
     }
 
