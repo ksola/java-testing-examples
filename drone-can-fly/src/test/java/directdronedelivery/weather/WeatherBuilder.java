@@ -18,6 +18,10 @@ public class WeatherBuilder {
         return this;
     }
     
+    public WeatherBuilder likeaBadWeather() {
+		return likeNiceWeather().but().withPrecipitationPossible(true);
+    }
+    
     public WeatherBuilder but() {
         return this;
     }

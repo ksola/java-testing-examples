@@ -18,6 +18,7 @@ import directdronedelivery.drone.services.ErrorReason;
 import directdronedelivery.drone.services.FlightControlService;
 import directdronedelivery.drone.services.MessagingService;
 import directdronedelivery.weather.Weather;
+import directdronedelivery.weather.WeatherBuilder;
 
 public class FlightControlServiceTest {
     
@@ -28,9 +29,9 @@ public class FlightControlServiceTest {
     
     @Before
     public void before() {
-    	// TODO 07a: make mock for MessagingService using Mockito.mock(...)
+    	// TODO 05a: make mock for MessagingService using Mockito.mock(...)
     	// (...)
-    	// TODO 07b: make mock for CargoDao using Mockito.mock(...)
+    	// TODO 05b: make mock for CargoDao using Mockito.mock(...)
     	// (...)
         flightControlService = new FlightControlService(mCargoDao, mMessagingService);
         
@@ -66,7 +67,7 @@ public class FlightControlServiceTest {
     @Test
     public void shouldNotAllowToFlyWhenWeatherIsBadAndDroneIsSmall() throws Exception {
         // given
-        Weather badWeather = null; // TODO 05a Implement a WeatherBuilder.aBadWeather() method. 
+        Weather badWeather = WeatherBuilder.aWeather().likeaBadWeather().build(); 
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().but().withWeather(badWeather).build();
         
         // when 
@@ -124,11 +125,11 @@ public class FlightControlServiceTest {
     }
     
     @Test
-    public void shouldNotStartDroneBecauseOfCargo() throws Exception {
+    public void shouldNotStartDroneBecauseOfMissingCargo() throws Exception {
         // given
-        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(1).build();
+        DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withoutCargo().build();
 
-        // TODO 07c: For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
+        // TODO 05c: For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           Method startDrone should throw a DroneCannotStartException, 
         //           use try-catch block and check if exception has been thrown (check errorMessage inside the exception).
 
@@ -140,7 +141,7 @@ public class FlightControlServiceTest {
         Cargo cargoId_1 = mCargoMap.get(1);
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(1).build();
         
-        // TODO 07d: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(1). Object cargoId_1 should be here returned.
+        // TODO 05d: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(1). Object cargoId_1 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
         //           using Mockito.verify(...) if method mMessagingService.sendEmail(...) and .sendSMS(...) were invoked
@@ -155,7 +156,7 @@ public class FlightControlServiceTest {
         Cargo cargoId_2 = mCargoMap.get(2);
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(2).build();
 
-        // TODO 07e: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(2). Object cargoId_2 should be here returned.
+        // TODO 05e: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(2). Object cargoId_2 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
         //           using Mockito.verify(...) if method mMessagingService.sendSMS(...) was invoked
@@ -171,7 +172,7 @@ public class FlightControlServiceTest {
         // given
         Cargo cargoId_3 = mCargoMap.get(3);
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(3).build();
-        // TODO 07f: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(3). Object cargoId_3 should be here returned.
+        // TODO 05f: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(3). Object cargoId_3 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
         //           using Mockito.verify(...) if method mMessagingService.sendSMS(...) and .sendEmail(...) weren't invoked at all.

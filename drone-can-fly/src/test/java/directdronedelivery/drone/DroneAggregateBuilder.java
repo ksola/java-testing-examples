@@ -3,24 +3,36 @@ package directdronedelivery.drone;
 import directdronedelivery.drone.DroneAggregate;
 import directdronedelivery.drone.DroneStatus;
 import directdronedelivery.weather.Weather;
+import directdronedelivery.weather.WeatherBuilder;
 
-// TODO 05: Implement builder methods as in previous tasks
 public class DroneAggregateBuilder {
 
+	private DroneAggregate droneUnderConstruction;
+	
+	public DroneAggregateBuilder() {
+		droneUnderConstruction = new DroneAggregate();
+	}
+	
     public static DroneAggregateBuilder aSmallDroneWithNiceWeatherAndCargo() {
-        return null;
+    	DroneAggregateBuilder builder = new DroneAggregateBuilder();
+		return builder.
+				withStatus(DroneStatus.READY_FOR_TAKE_OFF).
+				withType(DroneType.SMALL_FOUR_ROTORS).
+				withCargoId(1).
+				withWeather(WeatherBuilder.aWeather().likeNiceWeather().build());
     }
 
     public DroneAggregateBuilder withCargoId(Integer cargoId) {
-        return null;
+    	droneUnderConstruction.cargoID = cargoId;
+        return this;
     }
     
     public DroneAggregate build() {
-        return null;
+        return droneUnderConstruction;
     }
 
     public static DroneAggregateBuilder aBigDroneWithBadWeatherAndCargo() {
-        return null;
+        return aSmallDroneWithNiceWeatherAndCargo().but().withType(DroneType.BIG_SIX_ROTORS);
     }
 
     
@@ -29,17 +41,23 @@ public class DroneAggregateBuilder {
     }
 
     public DroneAggregateBuilder withWeather(Weather weather) {
-        
+        droneUnderConstruction.weather = weather;
         return this;
     }
 
-    public DroneAggregateBuilder withStatus(DroneStatus cargoLoading) {
-        return null;
+    public DroneAggregateBuilder withStatus(DroneStatus status) {
+    	droneUnderConstruction.status = status;
+        return this;
     }
 
     public DroneAggregateBuilder withoutCargo() {
-        return null;
+    	droneUnderConstruction.detachCargo();
+        return this;
     }
     
+    public DroneAggregateBuilder withType(DroneType droneType) {
+    	droneUnderConstruction.droneType = droneType;
+    	return this;
+    }
 
 }
