@@ -145,7 +145,7 @@ public class FlightControlServiceTest {
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
         //           using Mockito.verify(...) if method mMessagingService.sendEmail(...) and .sendSMS(...) were invoked
-        //           with the following two parameters: generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail().
+        //           with the following two parameters: generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail/Phone().
         //           E.g. (...).sendEmail(generateTestMessage(cargoId_1), cargoId_1.getRecipientEmail())
         
     }
@@ -160,7 +160,7 @@ public class FlightControlServiceTest {
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify
         //           using Mockito.verify(...) if method mMessagingService.sendSMS(...) was invoked
-        //           with the following two parameters: generateTestMessage(cargoId_2), cargoId_2.getRecipientEmail().
+        //           with the following two parameters: generateTestMessage(cargoId_2), cargoId_2.getRecipientPhone().
         //           and method mMessagingService.sendEmail(...) wasn't invoked at all. 
         //           As two parameters in method sendEmail(...) use Matchers.anyString().
         //           E.g. (...).sendEmail(Matchers.anyString(), Matchers.anyString())
@@ -172,6 +172,7 @@ public class FlightControlServiceTest {
         // given
         Cargo cargoId_3 = mCargoMap.get(3);
         DroneAggregate droneAggregate = DroneAggregateBuilder.aSmallDroneWithNiceWeatherAndCargo().withCargoId(3).build();
+        
         // TODO 05f: Use Mockito.when(...).thenReturn(...) to simulate response from mCargoDao.findCargoById(3). Object cargoId_3 should be here returned.
         //           For droneAggregate object invoke flightControlService.startDrone(droneAggregate).
         //           In the next step check if dronAggregate.getStatus == DroneStatus.DURING_MAINTENANCE and verify

@@ -23,9 +23,9 @@ public class FlightControlService {
     
     /**
      * Service checks if drone can start. The following condition have to be fulfilled:
-     * 1) DroneStatus = READY_FOR_TAKE_OFF 
-     * 2) cargoId is filled
-     * 3) Weather isGoodToFly equal true when DroneType equal SMALL_FOUR_ROTORS or DroneType equal BIG_SIX_ROTORS.
+     * 1) DroneStatus = READY_FOR_TAKE_OFF,
+     * 2) cargoId is filled,
+     * 3) Small Drone (SMALL_FOUR_ROTORS) needs good weather, big drone (BIG_SIX_ROTORS) starts at any weather.
      * 
      * @param droneAggregate
      * @return 
