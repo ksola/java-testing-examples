@@ -2,20 +2,30 @@ package directdronedelivery.drone.services;
 
 import java.util.Set;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@AllArgsConstructor
 public class CanDroneStartResult {
+
+    public CanDroneStartResult(boolean canDroneStart, Set<ErrorReason> reasons) {
+
+        this.canDroneStart = canDroneStart;
+        this.reasons = reasons;
+    }
 
     /**
      * Decision if the drone can start
      */
-    @Getter private boolean canDroneStart;
+    private boolean canDroneStart;
     
     /**
      * Reasons why the drone cannot start
      */
-    @Getter private Set<ErrorReason> reasons;
-    
+    private Set<ErrorReason> reasons;
+
+    public boolean isCanDroneStart() {
+        return canDroneStart;
+    }
+
+    public Set<ErrorReason> getReasons() {
+        return reasons;
+    }
 }
