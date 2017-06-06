@@ -1,0 +1,38 @@
+Pracujecie dla duzego banku i rozwijacie jeden z modulów. Waszym zadaniem bedzie zaimplementowanie nowej funkcjonalnosci w istniejacym systemie. 
+
+Aplikacja Bank-OCR-scanner-reader czyta pliki, w których zapisane sa liczby, które byly zeskanowane z kart kredytowych. Skaner zapisuje liczby tak jak sa wyswietlane na zegarze cyfrowym.
+Na przyklad liczba 123456789 wyglada nastepujaco:
+
+    _  _     _  _  _  _  _
+  | _| _||_||_ |_   ||_||_|
+  ||_  _|  | _||_|  ||_| _|
+
+Po przeczytaniu pliku, aplikacja próbuje ustalic numer konta. Na podstawie numeru konta ustalany jest Bank (pierwsze trzy cyfry mówia jaki to bank): 
+888 to BZWBK
+111 to Deutsche Bank
+222 to Millenium Bank
+pozostale numery to Golaya Bank
+
+Ostatnim etapem jest sprawdzenie checksumy. Jezeli checksuma jest poprawna wówczas na koniec numeru dodawna jest litera C i numer moze zostac wyslany do core.
+Jezeli checksuma nie jest poprawna wówczas C nie jest dodawane i numer konta musi isc do weryfikacji:
+
+Jezeli checksuma jest poprawna wówczas pojawi sie taki napis w consoli
+Account Number 000 000 000C is send to core for Bank Golaya Bank
+
+Jezeli zas checksuma nie jest poprawna pojawi sie nastepujacy napis:
+Account Number 888 888 888 have to be checked for Bank BZ WBK
+
+Jak uruchomic aplikacje
+
+W eclipsie w projekcie Bank-OCR-scanner-reader znajduje sie plik MainBankOCRConverter.launch Prawym przyciskiem klikamy na niego Run As->MainBankOCRConverter.
+Po uruchomieniu aplikacji z folderu example_ocr_codes kopujcie do folderu ocr-files przykladowe pliki i na konsoli pojawia sie napisy jak powyzej.
+
+Zadanie
+Aktualnie numer konta jest rodzielony jedna spacja. Klient sobie zazyczyl by numer kont nie byly rozdzielone spacja a "-"
+Czyli w konsoli zamiast 000 000 000C ma pojawic sie 000-000-000C
+
+
+
+
+
+
