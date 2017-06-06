@@ -1,15 +1,34 @@
 package bank.ocr.batch;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
 public class MessageToCore {
-    @Getter private String bankName;
-    @Getter private String bankBranchName;
-    @Getter private String number;
-    @Getter private boolean isConfirmed;
-    
+    private String bankName;
+    private String bankBranchName;
+    private String number;
+    private boolean isConfirmed;
+
+    public MessageToCore(String bankName, String bankBranchName, String number, boolean isConfirmed) {
+        this.bankName = bankName;
+        this.bankBranchName = bankBranchName;
+        this.number = number;
+        this.isConfirmed = isConfirmed;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public boolean isConfirmed() {
+        return isConfirmed;
+    }
+
     @Override
     public String toString() {
         if (isConfirmed) {
